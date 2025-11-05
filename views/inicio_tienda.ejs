@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Inicio</title>
+  <link rel="shortcut icon" href="" type="image/x-icon">
+  <link rel="stylesheet" href="/css/estyle.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#">Moda & Fup</a>
+
+      <nav class="main-nav" id="mainNav">
+        <ul>
+          <li><a href="#">Inicio</a></li>
+          <li><a href="#">Mujer</a></li>
+          <li><a href="#">Hombre</a></li>
+          <li><a href="#">Niños</a></li>
+          <li><a href="#">Ofertas</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button class="icon-btn search-btn" aria-label="Buscar">🔍</button>
+        <button class="icon-btn cart-btn" aria-label="Carrito">🛒<span class="cart-count">3</span></button>
+        <button id="menuToggle" class="hamburger" aria-label="Abrir menú">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-text">
+          <h1>Calidad, Moda y Diversidad — A precios justos</h1>
+          <p>Explora nuestra colección para Mujer, Hombre, Niños y Niñas. Nuevas tallas y modelos cada mes.</p>
+          <div class="hero-cta">
+            <a class="btn primary" href="#">Comprar ahora</a>
+            <a class="btn outline" href="#">Ver catálogos</a>
+          </div>
+        </div>
+        <div class="hero-aside">
+          <div class="promo-card">
+            <h3>Envío gratis</h3>
+            <p>En pedidos superiores a $120.000</p>
+            <a href="#" class="small-btn orange">Saber más</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEARCH BAR -->
+    <section class="search-bar container">
+      <input type="search" placeholder="Buscar por producto, talla, categoría..." aria-label="Buscar productos" />
+      <select aria-label="Filtrar por categoría">
+        <option value="">Todas las categorías</option>
+        <option>Mujer</option>
+        <option>Hombre</option>
+        <option>Niños</option>
+        <option>Niñas</option>
+      </select>
+      <button class="btn accent" aria-label="Buscar">Buscar</button>
+    </section>
+
+    <!-- CATEGORÍAS -->
+    <section class="container categories">
+      <h2>Categorías destacadas</h2>
+      <div class="cats-grid">
+        <article class="cat-card">
+          <img src="https://via.placeholder.com/360x220?text=Vestidos" alt="Vestidos" />
+          <h4>Vestidos</h4>
+        </article>
+        <article class="cat-card">
+          <img src="https://via.placeholder.com/360x220?text=Jeans" alt="Jeans" />
+          <h4>Jeans</h4>
+        </article>
+        <article class="cat-card">
+          <img src="https://via.placeholder.com/360x220?text=Tshirts" alt="Tshirts" />
+          <h4>TSHIRT</h4>
+        </article>
+        <article class="cat-card">
+          <img src="https://via.placeholder.com/360x220?text=Ropa+Infantil" alt="Ropa Infantil" />
+          <h4>Ropa Infantil</h4>
+        </article>
+      </div>
+    </section>
+
+    <!-- PRODUCTOS -->
+    <section class="container products-section">
+      <div class="section-header">
+        <h2>Productos populares</h2>
+        <a href="#" class="small-link">Ver todos</a>
+      </div>
+
+      <div class="products-grid">
+        <!-- product card -->
+        <article class="product-card">
+          <div class="product-media">
+            <img src="https://via.placeholder.com/400x500?text=TSHIRT+Mujer" alt="TSHIRT Mujer" />
+            <button class="wishlist-btn" aria-label="Agregar a favoritos">♡</button>
+          </div>
+          <div class="product-body">
+            <h3 class="product-title">TSHIRT Básica Mujer</h3>
+            <p class="product-meta">Tallas: XXS, XS, S, M, L, XL</p>
+            <div class="product-footer">
+              <span class="price">$45.000</span>
+              <div class="actions">
+                <button class="btn small yellow">Añadir</button>
+                <button class="btn small purple-outline">Detalles</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-media">
+            <img src="https://via.placeholder.com/400x500?text=Jeans+Hombre" alt="Jeans Hombre" />
+            <button class="wishlist-btn">♡</button>
+          </div>
+          <div class="product-body">
+            <h3 class="product-title">Jeans Terminados Hombre</h3>
+            <p class="product-meta">Tallas: XXS, XS, S, M, L, XL</p>
+            <div class="product-footer">
+              <span class="price">$120.000</span>
+              <div class="actions">
+                <button class="btn small yellow">Añadir</button>
+                <button class="btn small purple-outline">Detalles</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-media">
+            <img src="https://via.placeholder.com/400x500?text=Pantalones+Niña" alt="Pantalones Niña" />
+            <button class="wishlist-btn">♡</button>
+          </div>
+          <div class="product-body">
+            <h3 class="product-title">Pantalones Niña</h3>
+            <p class="product-meta">Tallas: 4,6,8,10,12,14,16</p>
+            <div class="product-footer">
+              <span class="price">$60.000</span>
+              <div class="actions">
+                <button class="btn small yellow">Añadir</button>
+                <button class="btn small purple-outline">Detalles</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Más cards de ejemplo -->
+        <article class="product-card">
+          <div class="product-media">
+            <img src="https://via.placeholder.com/400x500?text=Blusa+Mujer" alt="Blusa Mujer" />
+            <button class="wishlist-btn">♡</button>
+          </div>
+          <div class="product-body">
+            <h3 class="product-title">Blusa Moderna</h3>
+            <p class="product-meta">Tallas: XS - L</p>
+            <div class="product-footer">
+              <span class="price">$85.000</span>
+              <div class="actions">
+                <button class="btn small yellow">Añadir</button>
+                <button class="btn small purple-outline">Detalles</button>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- INFO / BENEFICIOS -->
+    <section class="container perks">
+      <div class="perks-grid">
+        <div class="perk">
+          <h4>Devoluciones fáciles</h4>
+          <p>30 días para cambios o devolución.</p>
+        </div>
+        <div class="perk">
+          <h4>Atención rápida</h4>
+          <p>Soporte en todas las ciudades donde operamos.</p>
+        </div>
+        <div class="perk">
+          <h4>Variedad de tallas</h4>
+          <p>Amplia gama de tallas para cada tipo de cliente.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <h4>Moda & Co</h4>
+        <p>Calidad, moda y diversidad a precios justos.</p>
+      </div>
+      <div>
+        <h5>Enlaces</h5>
+        <ul>
+          <li><a href="#">Nosotros</a></li>
+          <li><a href="#">Políticas</a></li>
+          <li><a href="#">Contacto</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Síguenos</h5>
+        <p>Twitter · Instagram · Facebook</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Moda & Co — Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Toggle menú móvil
+    const menuToggle = document.getElementById('menuToggle');
+    const mainNav = document.getElementById('mainNav');
+    menuToggle?.addEventListener('click', () => {
+      mainNav.classList.toggle('open');
+    });
+  </script>
+</body>
+</html>
