@@ -1,0 +1,25 @@
+{
+  "name": "tienda_hack",
+  "version": "1.0.0",
+  "description": "este repositorio almacena el proyecto tienda_hack el cual necesitaba un software para administrar un gran inventario",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juanmolanomg/tienda_hack.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/juanmolanomg/tienda_hack/issues"
+  },
+  "homepage": "https://github.com/juanmolanomg/tienda_hack#readme",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "mysql2": "^3.15.3"
+  }
+}
