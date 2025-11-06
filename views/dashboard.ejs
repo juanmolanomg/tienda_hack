@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><%= title %></title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f0f2f5; color:#0d1b2a; }
+
+.dashboard-container { max-width: 1400px; margin:0 auto; padding:20px; }
+
+/* Header */
+header { 
+  background: linear-gradient(135deg, #667eea 0%, #0b3d91 100%); 
+  color:white; 
+  padding:30px; 
+  border-radius:15px; 
+  margin-bottom:30px; 
+  text-align:center;
+  box-shadow:0 5px 20px rgba(0,0,0,0.15);
+}
+header h1 { font-size:2.5rem; margin-bottom:10px; }
+header p { font-size:1.1rem; opacity:0.9; }
+
+/* Navegación */
+.nav-links { 
+  display:flex; 
+  justify-content:center; 
+  gap:15px; 
+  margin-top:20px; 
+}
+.nav-links a { 
+  padding:10px 20px; 
+  background:white; 
+  color:#667eea; 
+  text-decoration:none; 
+  border-radius:25px; 
+  font-weight:bold;
+  transition:all 0.3s;
+}
+.nav-links a:hover { 
+  transform:translateY(-2px); 
+  box-shadow:0 5px 15px rgba(0,0,0,0.2); 
+}
+
+/* KPI Cards */
+.kpi-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  gap:20px;
+  margin-bottom:40px;
+}
+.kpi-card { 
+  background:white; 
+  padding:25px; 
+  border-radius:15px; 
+  text-align:center; 
+  box-shadow:0 3px 10px rgba(0,0,0,0.1);
+  transition:transform 0.3s;
+  border-top:4px solid #0b3d91;
+}
+.kpi-card:hover { transform:translateY(-5px); }
+.kpi-card .kpi-value { font-size:2rem; font-weight:bold; color:#0b3d91; margin:10px 0; }
+.kpi-card .kpi-label { color:#0b3d91; font-size:0.9rem; text-transform:uppercase; }
+.kpi-card .kpi-icon { font-size:2rem; margin-bottom:10px; }
+
+/* Charts Section */
+.charts-section {
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px,1fr));
+  gap:25px;
+  margin-bottom:30px;
+}
+.chart-card { 
+  background:white; 
+  padding:25px; 
+  border-radius:15px; 
+  box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+.chart-card h3 { 
+  color:#333; 
+  margin-bottom:20px; 
+  font-size:1.3rem;
+  border-bottom:2px solid #667eea;
+  padding-bottom:10px;
+}
+
+/* Tabla */
+.table-section { 
+  background:white; 
+  padding:25px; 
+  border-radius:15px; 
+  margin-bottom:30px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+.table-section h2 { 
+  color:#333; 
+  margin-bottom:20px; 
+  font-size:1.8rem;
+  border-bottom:3px solid #667eea;
+  padding-bottom:10px;
+}
+
+table { 
+  width:100%; 
+  border-collapse:collapse; 
+  margin-top:15px;
+}
+table th, table td { 
+  border:1px solid #e0e0e0; 
+  padding:12px; 
+  text-align:center; 
+}
+table th { 
+  background:#667eea; 
+  color:white; 
+  font-weight:600;
+  text-transform:uppercase;
+  font-size:0.85rem;
+}
+table tbody tr:nth-child(even) { background:#f9f9f9; }
+table tbody tr:hover { background:#e3f2fd; }
+
+/* CSV Upload Section */
+.csv-section { 
+  background:white; 
+  padding:25px; 
+  border-radius:15px; 
+  text-align:center;
+  box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+.csv-section h3 { 
+  color:#333; 
+  margin-bottom:15px; 
+}
+.csv-section input { 
+  padding:10px; 
+  border:2px solid #ddd; 
+  border-radius:5px; 
+  margin-right:10px;
+}
+.csv-section button { 
+  padding:10px 25px; 
+  background:#10b981; 
+  color:white; 
+  border:none; 
+  border-radius:5px; 
+  cursor:pointer; 
+  font-weight:bold;
+  transition:all 0.3s;
+}
+.csv-section button:hover { 
+  background:#0f9d70; 
+  transform:translateY(-2px);
+}
+
+/* Alert boxes */
+.alert-box {
+  padding:15px;
+  border-radius:10px;
+  margin-bottom:20px;
+  font-weight:500;
+}
+.alert-warning { background:#fff3cd; border-left:5px solid #ffc107; color:#856404; }
+.alert-success { background:#d4edda; border-left:5px solid #28a745; color:#155724; }
+
+/* Responsivo */
+@media(max-width:768px){
+  header h1 { font-size:1.8rem; }
+  .charts-section { grid-template-columns:1fr; }
+  .kpi-section { grid-template-columns:1fr 1fr; }
+  table th, table td { font-size:0.75rem; padding:6px; }
+  .nav-links { flex-direction:column; }
+}
+</style>
+</head>
+<body>
+<div class="dashboard-container">
+
+  <!-- HEADER -->
+  <header>
+    <h1> Retail Moda Analytics</h1>
+    <p>Sistema Inteligente de Gestión de Inventario</p>
+    <div class="nav-links">
+      <a href="/dashboard"> Dashboard</a>
+      <a href="/recomendaciones">💡 Recomendaciones</a>
+      <a href="/api/stock-critico" target="_blank">⚠️ Stock Crítico API</a>
+    </div>
+  </header>
+
+  <!-- Alertas dinámicas -->
+  <% if (kpis.stockCritico > 0) { %>
+    <div class="alert-box alert-warning">
+      ⚠️ <strong>Atención:</strong> Tienes <%= kpis.stockCritico %> productos con stock crítico. <a href="/recomendaciones" style="color:#856404; text-decoration:underline;">Ver recomendaciones</a>
+    </div>
+  <% } %>
+
+  <!-- KPI Cards -->
+  <section class="kpi-section">
+    <div class="kpi-card">
+      <div class="kpi-icon">💰</div>
+      <div class="kpi-label">Ventas Totales</div>
+      <div class="kpi-value">$<%= Number(kpis.ventasTotales).toLocaleString('es-CO') %></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">📦</div>
+      <div class="kpi-label">Productos Vendidos</div>
+      <div class="kpi-value"><%= kpis.productosVendidos %></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">🔄</div>
+      <div class="kpi-label">Rotación Promedio</div>
+      <div class="kpi-value"><%= (Number(kpis.rotacionPromedio) || 0).toFixed(2) %>x</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">⚠️</div>
+      <div class="kpi-label">Stock Crítico</div>
+      <div class="kpi-value" style="color:#dc3545;"><%= kpis.stockCritico %></div>
+    </div>
+  </section>
+
+  <!-- Gráficos principales -->
+  <section class="charts-section">
+    <div class="chart-card">
+      <h3>📊 Ventas por Categoría</h3>
+      <canvas id="ventasCategoria"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>📈 Tendencia Mensual</h3>
+      <canvas id="tendenciaMensual"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>👥 Ventas por Tipo de Cliente</h3>
+      <canvas id="ventasCliente"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>📏 Tallas más Vendidas</h3>
+      <canvas id="tallasVendidas"></canvas>
+    </div>
+  </section>
+
+  <!-- Análisis demográfico -->
+  <section class="charts-section">
+    <div class="chart-card">
+      <h3>🎂 Ventas por Grupo de Edad</h3>
+      <canvas id="ventasEdad"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>⚧ Ventas por Género</h3>
+      <canvas id="ventasGenero"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>🏪 Ventas por Sucursal</h3>
+      <canvas id="ventasSucursal"></canvas>
+    </div>
+  </section>
+
+  <!-- Análisis de rotación -->
+  <section class="charts-section">
+    <div class="chart-card">
+      <h3>🔄 Rotación Promedio por Tipo de Prenda</h3>
+      <canvas id="rotacionTipo"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>📅 Rotación Mensual</h3>
+      <canvas id="rotacionMensual"></canvas>
+    </div>
+  </section>
+
+  <!-- Tabla Top Productos -->
+  <section class="table-section">
+    <h2>🏆 Top 10 Productos más Vendidos</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>Talla</th>
+          <th>Ventas</th>
+          <th>Stock</th>
+          <th>Rotación</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% topProductos.forEach(p => { %>
+          <tr>
+            <td>#<%= p.id_producto %></td>
+            <td><strong><%= p.nombre %></strong></td>
+            <td><%= p.tipo_ropa %></td>
+            <td><%= p.talla %></td>
+            <td><%= Number(p.totalVentas || 0) %></td>
+            <td style="<%= p.stock <= 5 ? 'color:#dc3545; font-weight:bold;' : '' %>">
+              <%= Number(p.stock || 0) %>
+            </td>
+            <td><%= (Number(p.rotacion) || 0).toFixed(2) %>x</td>
+            <td>
+              <% if (p.stock <= 5) { %>
+                <span style="background:#dc3545; color:white; padding:3px 8px; border-radius:5px; font-size:0.75rem;">🚨 CRÍTICO</span>
+              <% } else if (p.rotacion > 1.5) { %>
+                <span style="background:#28a745; color:white; padding:3px 8px; border-radius:5px; font-size:0.75rem;">🔥 ALTA</span>
+              <% } else if (p.rotacion < 0.3) { %>
+                <span style="background:#ffc107; color:#333; padding:3px 8px; border-radius:5px; font-size:0.75rem;">⚠️ BAJA</span>
+              <% } else { %>
+                <span style="background:#17a2b8; color:white; padding:3px 8px; border-radius:5px; font-size:0.75rem;">✅ NORMAL</span>
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Carga CSV -->
+  <section class="csv-section">
+    <h3>📤 Cargar Datos de Ventas (CSV)</h3>
+    <p style="color:#666; margin-bottom:15px; font-size:0.9rem;">
+      Formato esperado: id_producto, cantidad, subtotal, fecha (opcional)
+    </p>
+    <form action="/cargar-csv" method="post" enctype="multipart/form-data">
+      <input type="file" name="csvfile" accept=".csv" required>
+      <button type="submit">📁 Cargar Ventas</button>
+    </form>
+  </section>
+
+</div>
+
+<script>
+const colorPalette = ['#667eea','#764ba2','#f59e0b','#10b981','#ef4444','#6366f1','#8b5cf6','#ec4899'];
+
+// Configuración común para todos los gráficos
+Chart.defaults.font.family = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+Chart.defaults.font.size = 12;
+
+// Ventas por Categoría
+new Chart(document.getElementById('ventasCategoria'), {
+  type: 'doughnut',
+  data: {
+    labels: <%- JSON.stringify(ventasPorCategoria.map(v => v.tipo_ropa)) %>,
+    datasets: [{
+      data: <%- JSON.stringify(ventasPorCategoria.map(v => v.total)) %>,
+      backgroundColor: colorPalette,
+      borderWidth: 2,
+      borderColor: '#fff'
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'bottom' }
+    }
+  }
+});
+
+// Tendencia Mensual
+new Chart(document.getElementById('tendenciaMensual'), {
+  type: 'line',
+  data: {
+    labels: <%- JSON.stringify(tendenciaMensual.map(v => v.mes)) %>,
+    datasets: [{
+      label: 'Ventas ($)',
+      data: <%- JSON.stringify(tendenciaMensual.map(v => v.total)) %>,
+      borderColor: '#667eea',
+      backgroundColor: 'rgba(102, 126, 234, 0.1)',
+      fill: true,
+      tension: 0.4,
+      borderWidth: 3
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { beginAtZero: true }
+    }
+  }
+});
+
+// Ventas por Tipo de Cliente
+new Chart(document.getElementById('ventasCliente'), {
+  type: 'bar',
+  data: {
+    labels: <%- JSON.stringify(ventasPorCliente.map(v=>v.cliente_tipo)) %>,
+    datasets: [{
+      label:'Ventas',
+      data:<%- JSON.stringify(ventasPorCliente.map(v=>v.total)) %>,
+      backgroundColor: ['#667eea','#764ba2','#f59e0b','#10b981'],
+      borderRadius: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } }
+  }
+});
+
+// Tallas más Vendidas
+new Chart(document.getElementById('tallasVendidas'), {
+  type: 'bar',
+  data: {
+    labels: <%- JSON.stringify(tallasMasVendidas.map(v=>v.talla)) %>,
+    datasets: [{
+      label:'Unidades',
+      data:<%- JSON.stringify(tallasMasVendidas.map(v=>v.total)) %>,
+      backgroundColor: '#f59e0b',
+      borderRadius: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    indexAxis: 'y',
+    plugins: { legend: { display: false } }
+  }
+});
+
+// Ventas por Edad
+new Chart(document.getElementById('ventasEdad'), {
+  type: 'bar',
+  data: {
+    labels: <%- JSON.stringify(ventasPorEdad.map(v => v.grupo_edad)) %>,
+    datasets: [{
+      label: 'Ventas',
+      data: <%- JSON.stringify(ventasPorEdad.map(v => v.total_ventas)) %>,
+      backgroundColor: '#ef4444',
+      borderRadius: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } }
+  }
+});
+
+// Ventas por Género
+new Chart(document.getElementById('ventasGenero'), {
+  type: 'pie',
+  data: {
+    labels: <%- JSON.stringify(ventasPorGenero.map(v => v.genero)) %>,
+    datasets: [{
+      data: <%- JSON.stringify(ventasPorGenero.map(v => v.total_ventas)) %>,
+      backgroundColor: ['#6366f1', '#ec4899'],
+      borderWidth: 2,
+      borderColor: '#fff'
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { position: 'bottom' } }
+  }
+});
+
+// Ventas por Sucursal
+new Chart(document.getElementById('ventasSucursal'), {
+  type: 'bar',
+  data: {
+    labels: <%- JSON.stringify(ventasPorSucursal.map(v => v.sucursal)) %>,
+    datasets: [{
+      label: 'Ventas ($)',
+      data: <%- JSON.stringify(ventasPorSucursal.map(v => v.total)) %>,
+      backgroundColor: '#10b981',
+      borderRadius: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } }
+  }
+});
+
+// Rotación Promedio por Tipo de Prenda
+new Chart(document.getElementById('rotacionTipo'), {
+  type: 'bar',
+  data: {
+    labels: <%- JSON.stringify(rotacionPorTipo.map(v=>v.tipo_ropa)) %>,
+    datasets: [{
+      label:'Rotación',
+      data:<%- JSON.stringify(rotacionPorTipo.map(v=>parseFloat(v.rotacion_promedio).toFixed(2))) %>,
+      backgroundColor: '#10b981',
+      borderRadius: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    indexAxis: 'y',
+    plugins: { legend: { display: false } }
+  }
+});
+
+// Rotación Mensual
+new Chart(document.getElementById('rotacionMensual'), {
+  type: 'line',
+  data: {
+    labels: <%- JSON.stringify(rotacionMensual.map(v=>v.mes)) %>,
+    datasets: [{
+      label:'Rotación',
+      data:<%- JSON.stringify(rotacionMensual.map(v=>parseFloat(v.rotacion_mensual).toFixed(2))) %>,
+      borderColor:'#f59e0b',
+      backgroundColor: 'rgba(245, 158, 11, 0.1)',
+      fill:true,
+      tension: 0.4,
+      borderWidth: 3
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: true } }
+  }
+});
+</script>
+</body>
+</html>
