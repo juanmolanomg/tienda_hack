@@ -251,3 +251,173 @@ html, body {
 @media (max-width: 640px){
   .products-grid, .cats-grid { grid-template-columns: 1fr; }
 }
+.site-header {
+  background: #fff;
+  padding: 10px 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.brand {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0b3d91;
+}
+
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.main-nav a {
+  padding: 8px 10px;
+  transition: 0.3s;
+  border-radius: 5px;
+  color: #0d1b2a;
+}
+
+.main-nav a:hover {
+  background-color: #0b3d91;
+  color: #fff;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  position: relative;
+}
+
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  background: #ff4d4f;
+  color: #fff;
+  font-size: 0.8rem;
+  padding: 2px 6px;
+  border-radius: 50%;
+}
+
+.hamburger {
+  display: none;
+  font-size: 1.5rem;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .main-nav ul {
+    flex-direction: column;
+    gap: 10px;
+    display: none;
+    background: #fff;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .main-nav.open ul { display: flex; }
+  .hamburger { display: block; }
+}
+.site-footer {
+  background: #0b3d91;
+  color: #fff;
+  padding: 40px 0 20px 0;
+  margin-top: 50px;
+  font-size: 0.9rem;
+}
+
+.footer-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: space-between;
+}
+
+.footer-grid h4, .footer-grid h5 {
+  margin-bottom: 12px;
+  color: #fff;
+}
+
+.footer-links ul, .footer-social ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links ul li, .footer-social ul li {
+  margin-bottom: 8px;
+}
+
+.footer-links ul li a, .footer-social ul li a {
+  color: #fff;
+  transition: 0.3s;
+}
+
+.footer-links ul li a:hover, .footer-social ul li a:hover {
+  color: #ffb400;
+}
+
+.footer-newsletter input {
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  margin-right: 6px;
+}
+
+.footer-newsletter button {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  background: #ffb400;
+  color: #fff;
+  cursor: pointer;
+}
+
+.footer-newsletter button:hover {
+  background: #e6a300;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.8rem;
+  color: #ccc;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .footer-grid {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .footer-newsletter form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .footer-newsletter input {
+    width: 100%;
+  }
+}

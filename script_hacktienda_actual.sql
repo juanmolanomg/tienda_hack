@@ -30,7 +30,8 @@ CREATE TABLE administrador (
     estado ENUM('activo', 'inactivo') DEFAULT 'activo'
 ) ENGINE=InnoDB;
 
-
+INSERT INTO administrador (nombre, email, contrasena, estado) 
+VALUES ('Admin2', 'admin2@retail.com', '$2b$10$YourHashedPasswordHere', 'activo');
 -- =======================================
 -- TABLA: Tipo de cliente
 -- =======================================

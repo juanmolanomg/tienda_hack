@@ -13,7 +13,7 @@ const session = require('express-session');
 
 // Configuración de sesión
 app.use(session({
-  secret: 'mi_clave_secreta_123', // Cambia esto por una clave segura
+  secret: 'mi_clave_secreta_123', // Cambiar esto por una clave segura
   resave: false,                  // No guardar sesión si no ha cambiado
   saveUninitialized: false,       // No guardar sesiones vacías
   cookie: {
@@ -34,6 +34,7 @@ app.use('/imgs', express.static(path.join(__dirname, 'imgs')));
 // Configuración de Multer para subida de archivos CSV
 const upload = multer({ dest: 'uploads/' });
 
+
 async function getConnection() {
   return await mysql.createConnection({
     host: 'localhost',
@@ -42,6 +43,7 @@ async function getConnection() {
     database: 'retail_ropa'
   });
 }
+
 
 // ----------------- Funciones de cálculo ----------------- //
 async function getVentasPorEdad(conn) {
@@ -153,7 +155,12 @@ async function getVentasPorSucursal(conn) {
 app.get('/', async (req, res) => {
   return res.render('inicio_tienda',{title:'inicio de la tienda'})
 })
-
+app.get('/ofertas', async (req, res) => {
+  return res.render('ofertas',{title:'vista ofertas'})
+})
+app.get('/vistanino', async (req, res) => {
+  return res.render('vistaniño',{title:'vista de ropa de niños'})
+})
 // ----------------- Dashboard Principal ----------------- //
 app.get('/dashboard', async (req, res) => {
   try {
@@ -401,6 +408,98 @@ app.get('/recomendaciones', async (req, res) => {
     console.error('Error en recomendaciones:', error);
     res.status(500).send('Error al cargar recomendaciones');
   }
+});
+
+// Registro de usuario
+app.post('/register', async (req, res) => {
+    const { nombre, email, contrasena, contrasenaConf } = req.body;
+
+    if (contrasena !== contrasenaConf) {
+        return res.status(400).send('Las contraseñas no coinciden');
+    }
+    const conn = await getConnection();
+    try {
+        const hash = await bcrypt.hash(contrasena, 10);
+
+        await conn.execute(
+            'INSERT INTO usuario (nombre, email, contrasena) VALUES (?, ?, ?)',
+            [nombre, email, hash]
+        );
+
+        res.redirect('/'); // o donde quieras
+    } catch (error) {
+        console.log(error);
+        if (error.code === 'ER_DUP_ENTRY') {
+            return res.status(400).send('El correo ya está registrado');
+        }
+        res.status(500).send('Error en el servidor');
+    }
+});
+
+// Login
+app.post('/login', async (req, res) => {
+    const { email, contrasena } = req.body;
+
+    // Caso especial de administrador hardcodeado
+    if (email === 'admin@popayan.fup.co' && contrasena === 'root1234') {
+        req.session.user = { id: 0, nombre: 'Administrador', rol: 'admin' };
+        return res.redirect('/dashboard');
+    }
+
+    const conn = await getConnection();
+
+    try {
+        // Primero busco en admin
+        const [adminRows] = await conn.execute('SELECT * FROM administrador WHERE email = ?', [email]);
+        if (adminRows.length > 0) {
+            const admin = adminRows[0];
+            const match = await bcrypt.compare(contrasena, admin.contrasena);
+            if (match) {
+                req.session.user = { id: admin.id_admin, nombre: admin.nombre, rol: 'admin' };
+                return res.redirect('/dashboard'); // dashboard admin
+            } else {
+                return res.status(401).send('Contraseña incorrecta');
+            }
+        }
+
+        // Busco en usuarios
+        const [userRows] = await conn.execute('SELECT * FROM usuario WHERE email = ?', [email]);
+        if (userRows.length === 0) return res.status(404).send('Usuario no encontrado');
+
+        const user = userRows[0];
+        const match = await bcrypt.compare(contrasena, user.contrasena);
+        if (!match) return res.status(401).send('Contraseña incorrecta');
+
+        req.session.user = { id: user.id_usuario, nombre: user.nombre, rol: user.rol };
+        
+        // Redireccionar según rol
+        if (user.rol === 'admin') return res.redirect('/admin');
+        if (user.rol === 'vendedor') return res.redirect('/');
+        return res.redirect('/'); // invitado u otro
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Error en el servidor');
+    } finally {
+        await conn.end();
+    }
+});
+
+
+// Logout
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/');
+});
+
+// Rutas de ejemplo según rol
+app.get('/admin', (req, res) => {
+    if (!req.session.user || req.session.user.rol !== 'admin') return res.status(403).send('Acceso denegado');
+    res.send(`Bienvenido Admin: ${req.session.user.nombre}`);
+});
+
+app.get('/vendedor', (req, res) => {
+    if (!req.session.user || req.session.user.rol !== 'vendedor') return res.status(403).send('Acceso denegado');
+    res.send(`Bienvenido Vendedor: ${req.session.user.nombre}`);
 });
 
 // ----------------- Servidor ----------------- //
