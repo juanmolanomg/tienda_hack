@@ -5,9 +5,22 @@ const multer = require('multer');
 const csv = require('csv-parser');
 const fs = require('fs');
 const { title } = require('process');
-
+const bcrypt = require('bcrypt');
 const app = express();
 const PORT = 4000;
+
+const session = require('express-session');
+
+// Configuración de sesión
+app.use(session({
+  secret: 'mi_clave_secreta_123', // Cambia esto por una clave segura
+  resave: false,                  // No guardar sesión si no ha cambiado
+  saveUninitialized: false,       // No guardar sesiones vacías
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 2,   // 2 horas
+    secure: false                  // true si estás en HTTPS
+  }
+}));
 
 // ----------------- Configuración ----------------- //
 app.set('view engine', 'ejs');
@@ -16,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/css', express.static(path.join(__dirname, 'css')));
+app.use('/imgs', express.static(path.join(__dirname, 'imgs')));
 
 // Configuración de Multer para subida de archivos CSV
 const upload = multer({ dest: 'uploads/' });

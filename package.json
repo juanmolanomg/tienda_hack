@@ -18,10 +18,12 @@
   },
   "homepage": "https://github.com/juanmolanomg/tienda_hack#readme",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "csv": "^6.4.1",
     "csv-parser": "^3.2.0",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
+    "express-session": "^1.18.2",
     "fs": "^0.0.1-security",
     "multer": "^2.0.2",
     "mysql2": "^3.15.3",

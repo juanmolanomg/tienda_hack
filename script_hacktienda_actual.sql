@@ -5,6 +5,32 @@ DROP DATABASE IF EXISTS retail_ropa;
 CREATE DATABASE retail_ropa CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE retail_ropa;
 
+
+-- =======================================
+-- TABLA: Usuarios del sistema
+-- =======================================
+CREATE TABLE usuario (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    contrasena VARCHAR(255) NOT NULL,
+    rol ENUM('admin', 'vendedor', 'invitado') DEFAULT 'vendedor',
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- =======================================
+-- TABLA: Administradores
+-- =======================================
+CREATE TABLE administrador (
+    id_admin INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    contrasena VARCHAR(255) NOT NULL,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    estado ENUM('activo', 'inactivo') DEFAULT 'activo'
+) ENGINE=InnoDB;
+
+
 -- =======================================
 -- TABLA: Tipo de cliente
 -- =======================================
